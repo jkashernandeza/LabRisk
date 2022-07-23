@@ -2,6 +2,7 @@ import requests
 import time
 import json
 from tqdm import tqdm
+from datetime import datetime
 
 #User info ####################################################################################
 def getUserInfo(user_id):
@@ -127,6 +128,7 @@ def main():
     #userID = 1027925857392885761 #JuanC
     #userID = 1673751446 #Ketra
     #users = [1673751446,1027925857392885761]
+    str_date_time = datetime.now().strftime("%d_%m_%y_%H%M%S%f")[:-6]
     u=open("H:/My Drive/jkas/Mitacs/LabRisk/TwitterApi/users.json")
     users = json.load(u)
     node = {}
@@ -135,9 +137,12 @@ def main():
         node = {"userID" : userID["id"], "followers" : fetchingFollowers(userInfo), 
         "following" : fetchingFollowing(userInfo)}
         #print(node)
-        out_file = open("nodes.json", "a") 
+        out_file = open("nodes_{}.json".format(str_date_time), "a")
+        if band == 0:
+            out_file.write("[\n")
         json.dump(node, out_file, indent = 4)
         if band + 1 == len(users):
+            out_file.write("\n]")
             out_file.close()
         else:
             out_file.write(",\n")
