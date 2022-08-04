@@ -1,21 +1,30 @@
 #https://developer.twitter.com/en/docs
 #https://github.com/twitterdev/Twitter-API-v2-sample-code
 
-import requests
-import time
+#Libraries ###################################################################################
 import json
 from tqdm import tqdm
 from datetime import datetime
+##############################################################################################
 
+#Methods #####################################################################################
 from RequestApi import *
 import Keys
 from UsersMethods import *
+##############################################################################################
 
+#Main ########################################################################################
 def main():
     str_date_time = datetime.now().strftime("%d_%m_%y_%H%M%S%f")[:-6]
     u=open("H:/My Drive/jkas/Mitacs/LabRisk/TwitterApi/users.json")
     users = json.load(u)
+    if len(users) > 400:
+        print("Fetching limit exceeded")
+        Keys.bToken = ""
+        u.close()
+        quit()
     node = {}
+    #Calculating time #########################################################################
     noRequest = 0
     for i in tqdm(users,desc="Calculating time"):
         x = connect_to_endpoint(getUserInfo(i["id"]),get_paramsUserInfo())
@@ -28,14 +37,15 @@ def main():
         flag = input("Time request will be {} min\nContinue? (Y/N): ".format(int(timeRequired)*15))
         if flag != "Y" or "y":
             u.close()
-            f.close()
+            Keys.bToken = ""
             quit()
+    #Fetching #################################################################################
     for band, userID in enumerate(tqdm(users, desc = "Fetching")):
         userInfo = connect_to_endpoint(getUserInfo(userID["id"]),get_paramsUserInfo())
         node = {"userID" : userID["id"], "followers" : fetchingFollowers(userInfo), 
         "following" : fetchingFollowing(userInfo)}
         #print(node)
-        out_file = open("nodes_{}.json".format(str_date_time), "a")
+        out_file = open("nodesU_{}.json".format(str_date_time), "a")
         if band == 0:
             out_file.write("[\n")
         json.dump(node, out_file, indent = 4)
@@ -44,11 +54,15 @@ def main():
             out_file.close()
         else:
             out_file.write(",\n")
-    u.close()
+            u.close()
+    Keys.bToken = ""
+##############################################################################################
 
+#Run and  set keys ###########################################################################
 if __name__ == "__main__":
     f=open("H:/My Drive/jkas/Mitacs/LabRisk/TwitterApi/keys.json")
     data = json.load(f)
     Keys.bToken = data['BearerToken']
     f.close()
     main()
+##############################################################################################
