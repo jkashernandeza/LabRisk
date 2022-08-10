@@ -15,7 +15,6 @@ from TweetsMethods import *
 
 #Main ########################################################################################
 def main():
-    tweet = 1550956529859297280
     str_date_time = datetime.now().strftime("%d_%m_%y_%H%M%S%f")[:-6]
     band2 = True
     u=open("H:/My Drive/jkas/Mitacs/LabRisk/TwitterApi/tweets.json")
@@ -44,7 +43,7 @@ def main():
         tweetInfo = connect_to_endpoint(getTweetInfo(tweetID["id"]),get_paramsTweetInfo())
         #print(tweetInfo)
         out_file = open("nodesT_{}.json".format(str_date_time), "a")
-        #No info in the node retweet ##########################################################
+        #No info in the node ##################################################################
         if tweetInfo["data"]["public_metrics"]["retweet_count"] == 0 and tweetInfo["data"]["public_metrics"]["like_count"] == 0:
             if band + 1 == len(tweets):
                 out_file.write("\n]")
