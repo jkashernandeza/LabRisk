@@ -17,7 +17,7 @@ Example of the input json:\
 {"TweetID":"xxxxxxxxxxxxxxxxxx","UserID":"xxxxxxxxxxxxxxxxxx"}\
 ]\
 The code will give an approximation of the time it will takes running. We accept by inserting a 'Y' (case sensitive). When it finish we will have a json file named 'nodesT_dd_mm_yy_hhmmss.json'. Save the location because we need it later.
-The output file contains the user who likes and retweet the tweet, like this:
+The output file contains the user who likes and retweet the tweet, like this:\
 [\
 {\
     "tweetID": xxxxxxxxxxxxxxxxxx,\
@@ -34,20 +34,19 @@ It has the same structure of the last scraper and we also need to feed it with t
 The code will also give us an approximation, not necessarily the same time.
 When it finish we will have a json file named 'nodesU_dd_mm_yy_hhmmss.json'. Save the location because we need it later.\
 The output file contains the user followers and followings, like this:\
-[
-{
-    "userID": xxxxxxxxxxxxxxxxxx,
-    "followers": [
-        "xxxxxxxxxxxxxxxxxx
-    ],
-    "following": [
-        "xxxxxxxxxxxxxxxxxx"
-    ]
-}
-]
+[\
+{\
+    "userID": xxxxxxxxxxxxxxxxxx,\
+    "followers": [\
+        "xxxxxxxxxxxxxxxxxx\
+    ],\
+    "following": [\
+        "xxxxxxxxxxxxxxxxxx"\
+    ]\
+}\
+]\
 
 Please note that you can run in parallel the codes. How to running is your choose.
-
 ## Storage in Neo4j
 There are previous steps before you can run the code:
 - Have a Neo4j data base.
