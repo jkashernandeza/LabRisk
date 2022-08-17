@@ -15,7 +15,7 @@ Example of the input json:\
 {"TweetID":"xxxxxxxxxxxxxxxxxx","UserID":"xxxxxxxxxxxxxxxxxx"},\
 ...\
 {"TweetID":"xxxxxxxxxxxxxxxxxx","UserID":"xxxxxxxxxxxxxxxxxx"}\
-]\
+]
 The code will give an approximation of the time it will takes running. We accept by inserting a 'Y' (case sensitive). When it finish we will have a json file named 'nodesT_dd_mm_yy_hhmmss.json'. Save the location because we need it later.
 The output file contains the user who likes and retweet the tweet, like this:\
 [\
@@ -28,7 +28,7 @@ The output file contains the user who likes and retweet the tweet, like this:\
         "xxxxxxxxxxxxxxxxxx"\
     ]\
 }\
-]\
+]
 ### Users Relationships
 It has the same structure of the last scraper and we also need to feed it with the same input json
 The code will also give us an approximation, not necessarily the same time.
