@@ -11,13 +11,19 @@ from datetime import datetime
 from RequestApi import *
 import Keys
 from TweetsMethods import *
+from tkinter import *
+from tkinter import filedialog
 ##############################################################################################
 
 #Main ########################################################################################
 def main():
     str_date_time = datetime.now().strftime("%d_%m_%y_%H%M%S%f")[:-6]
     band2 = True
-    u=open("H:/My Drive/jkas/Mitacs/LabRisk/TwitterApi/tweets.json")
+    filepath = filedialog.askopenfilename(
+        initialdir="/Desktop",title="Open JSON",
+        filetypes=(("json files","*.json"),("all files","*.*")))
+    str_date_time = datetime.now().strftime("%d_%m_%y_%H%M%S%f")[:-6]
+    u=open(filepath)
     tweets = json.load(u)
     if len(tweets) > 400:
         print("Fetching limit exceeded")
@@ -28,19 +34,19 @@ def main():
     #Calculating time #########################################################################
     noRequest = 0
     for i in tqdm(tweets,desc="Calculating time"):
-        x = connect_to_endpoint(getTweetInfo(i["id"]),get_paramsTweetInfo())
+        x = connect_to_endpoint(getTweetInfo(i["TweetID"]),get_paramsTweetInfo())
         n = json.dumps(x["data"]["public_metrics"]["retweet_count"])
         noRequest += (int(int(n)/1000))+1
     timeRequired = noRequest/15
     if timeRequired > 1:
-        flag = input("Time request will be {} min\nContinue? (Y/N): ".format(int(timeRequired)*15))
-        if flag != "Y" or "y":
+        flag = input("Time request will be {} min\nContinue? (Y): ".format(int(timeRequired)*15))
+        if not("Y" in flag):
             u.close()
             Keys.bToken = ""
             quit()
     #Fetching #################################################################################
     for band, tweetID in enumerate(tqdm(tweets, desc = "Fetching")):
-        tweetInfo = connect_to_endpoint(getTweetInfo(tweetID["id"]),get_paramsTweetInfo())
+        tweetInfo = connect_to_endpoint(getTweetInfo(tweetID["TweetID"]),get_paramsTweetInfo())
         #print(tweetInfo)
         out_file = open("nodesT_{}.json".format(str_date_time), "a")
         #No info in the node ##################################################################
@@ -57,7 +63,7 @@ def main():
             likers = fetchingLikers(tweetInfo)
         except Exception:
             likers = []
-        node = {"tweetID" : tweetID["id"], "retweets" : retweets, "likers" : likers}
+        node = {"tweetID" : tweetID["TweetID"], "retweets" : retweets, "likers" : likers}
         #print(node)
         if band2:
             out_file.write("[\n")

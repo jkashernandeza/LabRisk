@@ -11,12 +11,17 @@ from datetime import datetime
 from RequestApi import *
 import Keys
 from UsersMethods import *
+from tkinter import *
+from tkinter import filedialog
 ##############################################################################################
 
 #Main ########################################################################################
 def main():
+    filepath = filedialog.askopenfilename(
+        initialdir="/Desktop",title="Open JSON",
+        filetypes=(("json files","*.json"),("all files","*.*")))
     str_date_time = datetime.now().strftime("%d_%m_%y_%H%M%S%f")[:-6]
-    u=open("H:/My Drive/jkas/Mitacs/LabRisk/TwitterApi/users.json")
+    u=open(filepath)
     users = json.load(u)
     if len(users) > 400:
         print("Fetching limit exceeded")
@@ -27,22 +32,22 @@ def main():
     #Calculating time #########################################################################
     noRequest = 0
     for i in tqdm(users,desc="Calculating time"):
-        x = connect_to_endpoint(getUserInfo(i["id"]),get_paramsUserInfo())
+        x = connect_to_endpoint(getUserInfo(i["UserID"]),get_paramsUserInfo())
         n = json.dumps(x["data"]["public_metrics"]["following_count"])
         noRequest += (int(int(n)/1000))+1
         n = json.dumps(x["data"]["public_metrics"]["followers_count"])
         noRequest += (int(int(n)/1000))+1
     timeRequired = noRequest/15
     if timeRequired > 1:
-        flag = input("Time request will be {} min\nContinue? (Y/N): ".format(int(timeRequired)*15))
-        if flag != "Y" or "y":
+        flag = input("Time request will be {} min\nContinue? (Y): ".format(int(timeRequired)*15))
+        if not("Y" in flag):
             u.close()
             Keys.bToken = ""
             quit()
     #Fetching #################################################################################
     for band, userID in enumerate(tqdm(users, desc = "Fetching")):
-        userInfo = connect_to_endpoint(getUserInfo(userID["id"]),get_paramsUserInfo())
-        node = {"userID" : userID["id"], "followers" : fetchingFollowers(userInfo), 
+        userInfo = connect_to_endpoint(getUserInfo(userID["UserID"]),get_paramsUserInfo())
+        node = {"userID" : userID["UserID"], "followers" : fetchingFollowers(userInfo), 
         "following" : fetchingFollowing(userInfo)}
         #print(node)
         out_file = open("nodesU_{}.json".format(str_date_time), "a")
