@@ -44,7 +44,7 @@ The output file contains the user followers and followings, like this:\
         "xxxxxxxxxxxxxxxxxx"\
     ]\
 }\
-]\
+]
 
 Please note that you can run in parallel the codes. How to running is your choose.
 ## Storage in Neo4j
