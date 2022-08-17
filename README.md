@@ -5,7 +5,7 @@ The repository has two parts:
 ## Scraper using Twitter API
 The first step is the request for a developer account in order to get a BToken key.\
 In the code I am consuming the keys from a local json file, each one has to replace their owns keys.\
-The 'RequestApi.py' file set the connection with the API. Note that have a counter of 15 min, that is because is the default time we need to wait when we get a 'Limit Request' error.\
+The 'RequestApi.py' file set the connection with the API. Note that have a timer of 15 min, that is because is the default time we need to wait when we get a 'Limit Request' error.\
 Then we have two branches of the scraper:
 ### Tweets interactions
 There are two python files. 'TweetsMethods.py' has the functions, meanwhile in 'TweetsInteractions'py' is a runnable file. Once we start the code we need to select a local json file with the IDs info. The code has a file picker by itself.\
